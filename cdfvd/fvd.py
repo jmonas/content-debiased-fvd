@@ -55,7 +55,7 @@ class cdfvd(object):
         device: Device to use for computing the features.
         half_precision: Whether to use half precision for the model.
     '''
-    def __init__(self, model: str = 'i3d', n_real: str = 'full', n_fake: int = 2048, ckpt_path: Optional[str] = None,
+    def __init__(self, model: str = 'i3d', n_real: str = 'full', n_fake: int = "full", ckpt_path: Optional[str] = None,
                  seed: int = 42, compute_feats: bool = False, device: str = 'cuda', half_precision: bool = False,
                  *args, **kwargs):
         self.model_name = model
@@ -213,7 +213,7 @@ class cdfvd(object):
         print('Real stats loaded from %s' % path)
 
     def load_videos(self, video_info: str, resolution: int = 256, sequence_length: int = 16, sample_every_n_frames: int = 1,
-                    data_type: str = 'video_numpy', num_workers: int = 4, batch_size: int = 16, conditioning_frames=None, subset_num=None) -> Union[torch.utils.data.DataLoader, List, None]:
+                    data_type: str = 'video_numpy', num_workers: int = 16, batch_size: int = 16, conditioning_frames=None, subset_num=None) -> Union[torch.utils.data.DataLoader, List, None]:
         '''
         This function loads videos from a way specified by `data_type`. 
         `video_numpy` loads videos from a file containing a numpy array with the shape `(B, T, H, W, C)`.
@@ -243,13 +243,14 @@ class cdfvd(object):
                                     resolution=resolution, sequence_length=sequence_length,
                                     sample_every_n_frames=sample_every_n_frames,
                                     batch_size=batch_size, num_workers=num_workers, conditioning_frames=conditioning_frames, subset_num=subset_num)
+            print("finished loading")
+
         elif data_type=='image_folder':
             print('Loading from frame files ...')
             video_loader = get_dataloader(video_info, image_folder=True,
                                     resolution=resolution, sequence_length=sequence_length,
                                     sample_every_n_frames=sample_every_n_frames,
                                     batch_size=batch_size, num_workers=num_workers)
-            print("finished loading")
         elif data_type=='stats_pkl':
             video_loader = None
             cache_name = '%s_%s_%s_res%d_len%d_skip%d_seed%d.pkl' % (self.model_name.lower(), video_info, self.n_real, resolution, sequence_length, sample_every_n_frames, 0)

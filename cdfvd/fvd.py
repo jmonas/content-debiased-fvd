@@ -55,7 +55,7 @@ class cdfvd(object):
         device: Device to use for computing the features.
         half_precision: Whether to use half precision for the model.
     '''
-    def __init__(self, model: str = 'i3d', n_real: str = 'full', n_fake: int = 2048, ckpt_path: Optional[str] = None,
+    def __init__(self, model: str = 'i3d', n_real: str = 'full', n_fake: int = "full", ckpt_path: Optional[str] = None,
                  seed: int = 42, compute_feats: bool = False, device: str = 'cuda', half_precision: bool = False,
                  *args, **kwargs):
         self.model_name = model

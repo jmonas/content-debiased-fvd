@@ -46,7 +46,6 @@ def preprocess(video, resolution, sequence_length=None, in_channels=3, sample_ev
     #     video = video[:sequence_length]
         
     if conditioning_frames: 
-        print(conditioning_frames)
         video = video[conditioning_frames:]
 
     # skip frames

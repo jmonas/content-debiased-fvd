@@ -10,9 +10,9 @@ score = evaluator.compute_fvd_from_stats()
 
 print(f"id3: {score}")
 
-# evaluator = fvd.cdfvd('videomae', ckpt_path=None)
-# evaluator.compute_real_stats(evaluator.load_videos('path/to/realvideos/'))
-# evaluator.compute_fake_stats(evaluator.load_videos('path/to/fakevideos/'))
-# score = evaluator.compute_fvd_from_stats()
+evaluator = fvd.cdfvd('videomae', ckpt_path=None)
+evaluator.compute_real_stats(evaluator.load_videos('path/to/realvideos/'))
+evaluator.compute_fake_stats(evaluator.load_videos('path/to/fakevideos/'))
+score = evaluator.compute_fvd_from_stats()
 
-# print(f"videomae: {score}")
+print(f"videomae: {score}")

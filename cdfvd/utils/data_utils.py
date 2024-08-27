@@ -20,8 +20,8 @@ VID_EXTENSIONS = ['.avi', '.mp4', '.webm', '.mov', '.mkv', '.m4v']
 
 
 def get_dataloader(data_path, image_folder, resolution=128, sequence_length=16, sample_every_n_frames=1,
-                   batch_size=16, num_workers=8):
-    data = VideoData(data_path, image_folder, resolution, sequence_length, sample_every_n_frames, batch_size, num_workers)
+                   batch_size=16, num_workers=8, conditioning_frames= None, subset_num=None):
+    data = VideoData(data_path, image_folder, resolution, sequence_length, sample_every_n_frames, batch_size, num_workers, conditioning_frames=conditioning_frames, subset_num=subset_num)
     loader = data._dataloader()
     return loader
 
@@ -34,16 +34,20 @@ def get_parent_dir(path):
     return osp.basename(osp.dirname(path))
 
 
-def preprocess(video, resolution, sequence_length=None, in_channels=3, sample_every_n_frames=1):
+def preprocess(video, resolution, sequence_length=None, in_channels=3, sample_every_n_frames=1, conditioning_frames=None):
     # video: THWC, {0, ..., 255}
     assert in_channels == 3
     video = video.permute(0, 3, 1, 2).float() / 255.  # TCHW
     t, c, h, w = video.shape
 
     # temporal crop
-    if sequence_length is not None:
-        assert sequence_length <= t
-        video = video[:sequence_length]
+    # if sequence_length is not None:
+    #     assert sequence_length <= t
+    #     video = video[:sequence_length]
+        
+    if conditioning_frames: 
+        print(conditioning_frames)
+        video = video[conditioning_frames:]
 
     # skip frames
     if sample_every_n_frames > 1:
@@ -89,7 +93,7 @@ class VideoData(data.Dataset):
     """
 
     def __init__(self, data_path: str, image_folder: bool, resolution: int, sequence_length: int,
-                 sample_every_n_frames: int, batch_size: int, num_workers: int, shuffle: bool = True):
+                 sample_every_n_frames: int, batch_size: int, num_workers: int, shuffle: bool = True, conditioning_frames=None, subset_num=None):
         super().__init__()
         self.data_path = data_path
         self.image_folder = image_folder
@@ -99,6 +103,8 @@ class VideoData(data.Dataset):
         self.batch_size = batch_size
         self.num_workers = num_workers
         self.shuffle = shuffle
+        self.conditioning_frames = conditioning_frames
+        self.subset_num = subset_num
 
     def _dataset(self):
         '''
@@ -111,7 +117,7 @@ class VideoData(data.Dataset):
         else:
             Dataset = VideoDataset
             dataset = Dataset(self.data_path, self.sequence_length,
-                              resolution=self.resolution, sample_every_n_frames=self.sample_every_n_frames)
+                              resolution=self.resolution, sample_every_n_frames=self.sample_every_n_frames, conditioning_frames = self.conditioning_frames, subset_num=self.subset_num)
         return dataset
 
     def _dataloader(self):
@@ -150,16 +156,19 @@ class VideoDataset(data.Dataset):
         sample_every_n_frames: Sample every n frames from the video.
     """
 
-    def __init__(self, data_folder: str, sequence_length: int = 16, resolution: int = 128, sample_every_n_frames: int = 1):
+    def __init__(self, data_folder: str, sequence_length: int = 16, resolution: int = 128, sample_every_n_frames: int = 1, conditioning_frames=None, subset_num=None):
         super().__init__()
         self.sequence_length = sequence_length
         self.resolution = resolution
         self.sample_every_n_frames = sample_every_n_frames
+        self.conditioning_frames = conditioning_frames
 
         folder = data_folder
         files = sum([glob.glob(osp.join(folder, '**', f'*{ext}'), recursive=True)
                      for ext in VID_EXTENSIONS], [])
-    
+        files_sorted = sorted(files)
+        if subset_num:
+            files = files_sorted[-subset_num:]
         warnings.filterwarnings('ignore')
         cache_file = osp.join(folder, f"metadata_{sequence_length}.pkl")
         if not osp.exists(cache_file):
@@ -205,7 +214,7 @@ class VideoDataset(data.Dataset):
                 continue
             break
 
-        return dict(**preprocess(video, resolution, sample_every_n_frames=self.sample_every_n_frames))
+        return dict(**preprocess(video, resolution, sample_every_n_frames=self.sample_every_n_frames, conditioning_frames=self.conditioning_frames))
 
 
 class FrameDataset(data.Dataset):

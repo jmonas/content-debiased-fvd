@@ -213,7 +213,7 @@ class cdfvd(object):
         print('Real stats loaded from %s' % path)
 
     def load_videos(self, video_info: str, resolution: int = 256, sequence_length: int = 16, sample_every_n_frames: int = 1,
-                    data_type: str = 'video_numpy', num_workers: int = 4, batch_size: int = 16) -> Union[torch.utils.data.DataLoader, List, None]:
+                    data_type: str = 'video_numpy', num_workers: int = 4, batch_size: int = 16, conditioning_frames=None, subset_num=None) -> Union[torch.utils.data.DataLoader, List, None]:
         '''
         This function loads videos from a way specified by `data_type`. 
         `video_numpy` loads videos from a file containing a numpy array with the shape `(B, T, H, W, C)`.
@@ -229,6 +229,7 @@ class cdfvd(object):
             data_type: Type of the video data, either `video_numpy`, `video_folder`, `image_folder`, or `stats_pkl`.
             num_workers: Number of workers for the dataloader.
             batch_size: Batch size for the dataloader.
+            conditioning_frames: frames to exlude from FVD calc
         
         Returns:
             Dataloader or list of numpy arrays containing the videos.
@@ -241,7 +242,7 @@ class cdfvd(object):
             video_loader = get_dataloader(video_info, image_folder=False,
                                     resolution=resolution, sequence_length=sequence_length,
                                     sample_every_n_frames=sample_every_n_frames,
-                                    batch_size=batch_size, num_workers=num_workers)
+                                    batch_size=batch_size, num_workers=num_workers, conditioning_frames=conditioning_frames, subset_num=subset_num)
         elif data_type=='image_folder':
             print('Loading from frame files ...')
             video_loader = get_dataloader(video_info, image_folder=True,

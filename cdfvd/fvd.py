@@ -249,6 +249,7 @@ class cdfvd(object):
                                     resolution=resolution, sequence_length=sequence_length,
                                     sample_every_n_frames=sample_every_n_frames,
                                     batch_size=batch_size, num_workers=num_workers)
+            print("finished loading")
         elif data_type=='stats_pkl':
             video_loader = None
             cache_name = '%s_%s_%s_res%d_len%d_skip%d_seed%d.pkl' % (self.model_name.lower(), video_info, self.n_real, resolution, sequence_length, sample_every_n_frames, 0)

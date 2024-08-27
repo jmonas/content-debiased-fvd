@@ -168,7 +168,9 @@ class VideoDataset(data.Dataset):
                      for ext in VID_EXTENSIONS], [])
         files_sorted = sorted(files)
         if subset_num:
+            print(subset_num)
             files = files_sorted[-subset_num:]
+        print("file len", len(files))
         warnings.filterwarnings('ignore')
         cache_file = osp.join(folder, f"metadata_{sequence_length}.pkl")
         if not osp.exists(cache_file):

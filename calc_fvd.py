@@ -11,8 +11,8 @@ score = evaluator.compute_fvd_from_stats()
 print(f"id3: {score}")
 
 evaluator = fvd.cdfvd('videomae', ckpt_path=None)
-evaluator.compute_real_stats(evaluator.load_videos('path/to/realvideos/'))
-evaluator.compute_fake_stats(evaluator.load_videos('path/to/fakevideos/'))
+evaluator.compute_real_stats(evaluator.load_videos(gt_path, resolution=256, sequence_length=25, data_type='video_folder', conditioning_frames=6, subset_num = 50))
+evaluator.compute_fake_stats(evaluator.load_videos(gen_path, resolution=256, sequence_length=25, data_type='video_folder', conditioning_frames=6, subset_num = 50))
 score = evaluator.compute_fvd_from_stats()
 
 print(f"videomae: {score}")

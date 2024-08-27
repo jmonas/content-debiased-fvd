@@ -170,7 +170,8 @@ class VideoDataset(data.Dataset):
             print(subset_num)
             files = files_sorted[-subset_num:]
         print("file len", len(files))
-        print(files)
+        for f in files:
+            print(f)
         warnings.filterwarnings('ignore')
         cache_file = osp.join(folder, f"metadata_{sequence_length}.pkl")
         if not osp.exists(cache_file):

@@ -62,8 +62,8 @@ if __name__ == "__main__":
 
 
     img_dir = Path(args.img_dir)
-    samples_dir = img_dir / "samples_mp4"
-    targets_dir = img_dir / "targets_mp4"
+    samples_dir = img_dir / "virtual" / "videos"
+    targets_dir = img_dir / "real" / "videos"
 
     all_samples = os.listdir(samples_dir)
 
@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
 
             final_samples = random.sample(all_samples, subset_num)
-            final_targets = [sample.replace("samples", "targets") for sample in final_samples]
+            final_targets = [sample.replace("virtual", "real") for sample in final_samples]
             assert all((targets_dir / final_target).exists() for final_target in final_targets), "Missing ground truth."
             videos1 = torch.stack([mp4_to_torch(samples_dir / sample)[args.num_cond_frames:] for sample in final_samples])
             videos2 = torch.stack([mp4_to_torch(targets_dir / target)[args.num_cond_frames:] for target in final_targets])

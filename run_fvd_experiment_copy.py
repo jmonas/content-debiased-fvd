@@ -19,11 +19,14 @@ from calculate_fvd import calculate_fvd
 from pathlib import Path
 
 
-def powers_of_two(max_value):
-    n = 8
-    while (2 ** n) <= max_value:
-        yield 2 ** n
-        n += 1
+def powers_of_two(n, start = 32):
+    """Generate powers of two up to and including n."""
+    k = start
+    while k <= n:
+        yield k
+        k *= 2
+    if k // 2 < n:
+        yield n
 
 def mp4_to_torch(mp4_path):
     frames_np = iio.imread(mp4_path, plugin="pyav")
@@ -80,9 +83,9 @@ if __name__ == "__main__":
     fvd_results ={}
     random.seed(0) 
 
-    print("sampling", list(powers_of_two(len(all_samples))))
+    print("sampling", list(powers_of_two(len(common_files))))
 
-    for subset_num in powers_of_two(len(all_samples)):
+    for subset_num in powers_of_two(len(common_files)):
         results = []
         for run_idx in range(10):
             print(f"Runnning FVD for {subset_num} videos (experiment #{run_idx}):", subset_num)

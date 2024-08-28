@@ -92,7 +92,7 @@ if __name__ == "__main__":
     fvd_results ={"sample_size": len(common_files),"fvd":{}, "lpips":{}}
     random.seed(0) 
 
-    print("sampling", [512, 1024])
+    print("sampling", [32, 64, 128, 256, 512, 1024])
 
     for subset_num in [32, 64, 128, 256, 512, 1024]:
         results_fvd = []

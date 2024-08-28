@@ -166,7 +166,7 @@ class VideoDataset(data.Dataset):
         files = sum([glob.glob(osp.join(folder, '**', f'*{ext}'), recursive=True)
                      for ext in VID_EXTENSIONS], [])
         files_sorted = sorted(files)
-        if subset_num:
+        if True:
             print(subset_num)
             selected_files = [files[idx] for idx in subset_num]
             print(selected_files)

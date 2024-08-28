@@ -22,11 +22,11 @@ def merge_videos(source_dir, target_dir):
             shutil.move(source_file, target_file)
             print(f"Moved: {source_file} to {target_file}")
 
-def main():
+if __name__ == "__main__"():
     parser = argparse.ArgumentParser(description="Merge MP4 files from two directories into a single target directory.")
-    parser.add_argument("source_dir1", type=str, help="Path to the first source video directory")
-    parser.add_argument("source_dir2", type=str, help="Path to the second source video directory")
-    parser.add_argument("target_dir", type=str, help="Path to the target video directory")
+    parser.add_argument("--source_dir1", type=str, help="Path to the first source video directory")
+    parser.add_argument("--source_dir2", type=str, help="Path to the second source video directory")
+    parser.add_argument("--target_dir", type=str, help="Path to the target video directory")
 
     args = parser.parse_args()
 

@@ -11,7 +11,7 @@ def powers_of_two(max_value):
         n += 1
 
 
-if __name__ == "__main__"():
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compute FVD for generated and ground truth videos.")
     parser.add_argument("gen_path", type=str, help="Path to the generated videos directory")
     parser.add_argument("gt_path", type=str, help="Path to the ground truth videos directory")

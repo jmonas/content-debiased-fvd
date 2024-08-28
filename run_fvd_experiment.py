@@ -6,7 +6,7 @@ import os
 import random
 import gc
 def powers_of_two(max_value):
-    n = 5
+    n = 8
     while (2 ** n) <= max_value:
         yield 2 ** n
         n += 1

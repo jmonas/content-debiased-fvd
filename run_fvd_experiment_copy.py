@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
     common_files = samples_set.intersection(targets_set)
     if args.dataset_size:
-        common_files =  list(common_files)[args.dataset_size:]
+        common_files =  list(common_files)[:args.dataset_size]
 
     print("len common files: ", len(common_files))
 

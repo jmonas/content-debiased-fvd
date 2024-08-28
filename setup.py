@@ -17,11 +17,11 @@ if __name__=="__main__":
             "torch",
             "torchvision",
             "numpy>=1.14.3",
-            "scipy>=1.0.1",
+            "scipy==1.9.3",
             "tqdm>=4.28.1",
             "pillow>=8.1",
             "requests",
-            "einops"
+            "einops",
         ],
         url="https://github.com/songweige/content-debiased-fvd",
         packages=['cdfvd'],

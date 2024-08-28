@@ -13,8 +13,8 @@ def powers_of_two(max_value):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compute FVD for generated and ground truth videos.")
-    parser.add_argument("gen_path", type=str, help="Path to the generated videos directory")
-    parser.add_argument("gt_path", type=str, help="Path to the ground truth videos directory")
+    parser.add_argument("--gen_path", type=str, help="Path to the generated videos directory")
+    parser.add_argument("--gt_path", type=str, help="Path to the ground truth videos directory")
     parser.add_argument("--resolution", type=int, default=256, help="Resolution of the videos (default: 256)")
     parser.add_argument("--sequence_length", type=int, default=25, help="Number of frames in each video sequence (default: 25)")
     parser.add_argument("--data_type", type=str, default='video_folder', help="Type of the data input (default: 'video_folder')")

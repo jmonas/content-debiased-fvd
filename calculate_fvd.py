@@ -37,33 +37,15 @@ def calculate_fvd(videos1, videos2, device, method='styleganv'):
     videos1 = trans(videos1)
     videos2 = trans(videos2)
 
-    fvd_results = {}
 
-    # for calculate FVD, each clip_timestamp must >= 10
-    for clip_timestamp in tqdm(range(videos1.shape[-3], videos1.shape[-3]+1)):
-       
-        # get a video clip
-        # videos_clip [batch_size, channel, timestamps[:clip], h, w]
-        videos_clip1 = videos1[:, :, : clip_timestamp]
-        videos_clip2 = videos2[:, :, : clip_timestamp]
 
-        # get FVD features
-        feats1 = get_fvd_feats(videos_clip1, i3d=i3d, device=device)
-        feats2 = get_fvd_feats(videos_clip2, i3d=i3d, device=device)
-      
-        # calculate FVD when timestamps[:clip]
-        fvd_results[clip_timestamp] = frechet_distance(feats1, feats2)
 
+    feats1 = get_fvd_feats(videos1, i3d=i3d, device=device)
+    feats2 = get_fvd_feats(videos2, i3d=i3d, device=device)
     
-    
-    print("sanity", frechet_distance(get_fvd_feats(videos1, i3d=i3d, device=device), get_fvd_feats(videos2, i3d=i3d, device=device)))
-    result = {
-        "value": fvd_results,
-        "video_setting": videos1.shape,
-        "video_setting_name": "batch_size, channel, time, heigth, width",
-    }
+    fvd_score = frechet_distance(feats1, feats2)
 
-    return result
+    return fvd_score
 
 # test code / using example
 

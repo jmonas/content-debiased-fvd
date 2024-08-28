@@ -69,10 +69,8 @@ if __name__ == "__main__":
 
 
     fvd_results ={}
-    num_vids = len(os.listdir(args.gen_path))
-    num_vids_gt = len(os.listdir(args.gt_path))
-    assert num_vids == num_vids_gt
-    for subset_num in powers_of_two(num_vids):
+
+    for subset_num in powers_of_two(len(all_samples)):
         results = []
         for run_idx in range(10):
             random.seed(0) 

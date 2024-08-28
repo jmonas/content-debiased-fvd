@@ -84,9 +84,9 @@ if __name__ == "__main__":
     fvd_results ={"sample_size": len(common_files),"results":{}}
     random.seed(0) 
 
-    print("sampling", [32, 64, 128, 256, 512, 1024])
+    print("sampling", [512, 1024])
 
-    for subset_num in [32, 64, 128, 256, 512, 1024]:
+    for subset_num in [512, 1024]:
         results = []
         for run_idx in range(10):
             selected_files = random.sample(common_files, subset_num)

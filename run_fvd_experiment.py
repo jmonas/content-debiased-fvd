@@ -37,7 +37,7 @@ if __name__ == "__main__":
             random.seed(0) 
             print(f"Runnning FVD for {subset_num} videos (experiment #{run_idx}):", subset_num)
             random_indexes = random.sample(range(num_vids), subset_num)
-            fvd_score = compute_fvd(args.gen_path, args.gt_path, resolution=args.resolution, sequence_length=args.sequence_length, data_type=args.data_type, conditioning_frames=args.conditioning_frames, subset_num = [0])
+            fvd_score = compute_fvd(args.gen_path, args.gt_path, resolution=args.resolution, sequence_length=args.sequence_length, data_type=args.data_type, conditioning_frames=args.conditioning_frames, subset_num = random_indexes)
             results.append(fvd_score)
             gc.collect()
         fvd_results[subset_num] = results

@@ -88,7 +88,7 @@ if __name__ == "__main__":
     common_files = samples_set.intersection(targets_set)
     common_files_list = list(common_files)
     if args.dataset_size:
-        groups = list(chunk_list(common_files_list, args.dataset_size))
+        groups = list(chunk_list(common_files_list, args.dataset_size))[:-1]
 
     print("len common files: ", len(common_files))
 
@@ -107,7 +107,7 @@ if __name__ == "__main__":
         for group in groups:
             results_fvd = []
             results_lpips = []
-            for run_idx in range(3):
+            for run_idx in range(10):
                 selected_files = random.sample(common_files, subset_num)
 
                 final_samples = [os.path.join(samples_dir, sample_name) for sample_name in selected_files]
@@ -134,12 +134,23 @@ if __name__ == "__main__":
         print("-----------------------------")
         print(subset_num)
         print("FVD")
-        for i in group_res_fvd:
-            print(i)
+        for data in group_res_fvd:
+            data_array = np.array(data)
+            average = np.mean(data_array)
+
+            # Calculate the variance
+            variance = np.var(data_array, ddof=1)  # ddof=1 provides the sample variance
+
+            print(f"{data}----Average: {average}----Variance: {variance}")
         print("LPIPS")
-        for i in group_res_lpips:
-            print(i)
-        print(f"group_res_lpips: ", group_res_lpips)
+        for data in group_res_lpips:
+            data_array = np.array(data)
+            average = np.mean(data_array)
+
+            # Calculate the variance
+            variance = np.var(data_array, ddof=1)  # ddof=1 provides the sample variance
+
+            print(f"{data}----Average: {average}----Variance: {variance}")
 
         print()
     

@@ -19,8 +19,8 @@ def merge_videos(source_dir, target_dir):
                     new_file = f"{base}_{count}{extension}"
                     target_file = os.path.join(target_dir, new_file)
 
-            shutil.move(source_file, target_file)
-            print(f"Moved: {source_file} to {target_file}")
+            shutil.copy(source_file, target_file)
+            print(f"Copied: {source_file} to {target_file}")
 
 def main():
     parser = argparse.ArgumentParser(description="Merge MP4 files from two directories into a single target directory.")

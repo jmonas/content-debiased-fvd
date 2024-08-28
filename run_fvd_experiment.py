@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     fvd_results ={}
     num_vids = len(os.listdir(args.gen_path))
-    for subset_num in powers_of_two(len(num_vids)):
+    for subset_num in powers_of_two(num_vids):
         results = []
         for run_idx in range(10):
             print(f"Runnning FVD for {subset_num} videos (experiment #{run_idx}):", subset_num)

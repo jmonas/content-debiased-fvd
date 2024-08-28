@@ -54,6 +54,9 @@ def calculate_fvd(videos1, videos2, device, method='styleganv'):
         # calculate FVD when timestamps[:clip]
         fvd_results[clip_timestamp] = frechet_distance(feats1, feats2)
 
+    
+    
+    print("sanity", frechet_distance(get_fvd_feats(videos1, i3d=i3d, device=device), get_fvd_feats(videos2, i3d=i3d, device=device)))
     result = {
         "value": fvd_results,
         "video_setting": videos1.shape,

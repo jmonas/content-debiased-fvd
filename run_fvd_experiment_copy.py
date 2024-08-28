@@ -88,7 +88,6 @@ if __name__ == "__main__":
     for subset_num in powers_of_two(len(common_files)):
         results = []
         for run_idx in range(10):
-            print(f"Runnning FVD for {subset_num} videos (experiment #{run_idx}):", subset_num)
             selected_files = random.sample(common_files, subset_num)
 
             final_samples = [os.path.join(samples_dir, sample_name) for sample_name in selected_files]
@@ -100,7 +99,7 @@ if __name__ == "__main__":
 
             fvd_score = calculate_fvd(videos1, videos2, "cuda", method='styleganv')
 
-            print(fvd_score)
+            print(f"FVD for {subset_num} videos (experiment #{run_idx}):", fvd_score)
             results.append(fvd_score)
             # fvd_score = compute_fvd(args.gen_path, args.gt_path, resolution=args.resolution, sequence_length=args.sequence_length, data_type=args.data_type, conditioning_frames=args.conditioning_frames, subset_num = random_indexes)
             # results.append(result['fvd'] )

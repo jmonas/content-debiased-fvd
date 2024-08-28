@@ -168,7 +168,7 @@ class VideoDataset(data.Dataset):
         files_sorted = sorted(files)
         if subset_num:
             print(subset_num)
-            selected_files = random.sample(files_sorted, subset_num)
+            selected_files = [files[idx] for idx in subset_num]
             print(selected_files)
         print("file len", len(selected_files))
         warnings.filterwarnings('ignore')

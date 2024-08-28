@@ -3,7 +3,7 @@ from cdfvd import fvd
 import json
 import argparse
 import os
-
+import random
 def powers_of_two(max_value):
     n = 5
     while (2 ** n) <= max_value:
@@ -24,6 +24,7 @@ if __name__ == "__main__":
     # parser.add_argument("--subset_num", type=int, default=50, help="Number of samples to compute FVD on (default: 50)")
 
     args = parser.parse_args()
+    random.seed(None) 
 
     fvd_results ={}
     num_vids = len(os.listdir(args.gen_path))
@@ -31,7 +32,8 @@ if __name__ == "__main__":
         results = []
         for run_idx in range(10):
             print(f"Runnning FVD for {subset_num} videos (experiment #{run_idx}):", subset_num)
-            fvd_score = compute_fvd(args.gen_path, args.gt_path, resolution=args.resolution, sequence_length=args.sequence_length, data_type=args.data_type, conditioning_frames=args.conditioning_frames, subset_num = subset_num)
+            random_indexes = random.sample(range(num_vids), subset_num)
+            fvd_score = compute_fvd(args.gen_path, args.gt_path, resolution=args.resolution, sequence_length=args.sequence_length, data_type=args.data_type, conditioning_frames=args.conditioning_frames, subset_num = random_indexes)
             results.append(fvd_score)
         fvd_results[subset_num] = results
 

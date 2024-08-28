@@ -134,12 +134,15 @@ if __name__ == "__main__":
         print("-----------------------------")
         print(subset_num)
         print("FVD")
+        fvd_var = []
+        lpips_var =[]
         for data in group_res_fvd:
             data_array = np.array(data)
             average = np.mean(data_array)
 
             # Calculate the variance
             variance = np.var(data_array, ddof=1)  # ddof=1 provides the sample variance
+            fvd_var.append(variance)
 
             print(f"{data}----Average: {average}----Variance: {variance}")
         print("LPIPS")
@@ -149,6 +152,8 @@ if __name__ == "__main__":
 
             # Calculate the variance
             variance = np.var(data_array, ddof=1)  # ddof=1 provides the sample variance
+            lpips_var.append(variance)
+
 
             print(f"{data}----Average: {average}----Variance: {variance}")
 
@@ -158,4 +163,4 @@ if __name__ == "__main__":
     os.makedirs(args.output, exist_ok=True)
     print(fvd_results)
     with open(args.output, 'w') as json_file:
-        json.dump(fvd_results, json_file, indent=4)
+        json.dump({"fvd_var": fvd_var, "lpips_var":lpips_var}, json_file, indent=4)

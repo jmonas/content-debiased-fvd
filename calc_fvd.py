@@ -8,8 +8,12 @@ from cdfvd import fvd
 # gt_path = "../repos/vista/logs/2024-08-24T05-35-59_training-vista_ft_actions/images/train/inputs_mp4"
 def compute_fvd(gen_path, gt_path, resolution=256, sequence_length=25, data_type='video_folder', conditioning_frames=3, subset_num = 50):
     evaluator = fvd.cdfvd('i3d', ckpt_path=None, device="cpu")
+    evaluator.empty_fake_stats()
+    evaluator.empty_real_stats()
     evaluator.compute_real_stats(evaluator.load_videos(gt_path, resolution=resolution, sequence_length=sequence_length, data_type=data_type, conditioning_frames=conditioning_frames, subset_num = subset_num))
     evaluator.compute_fake_stats(evaluator.load_videos(gen_path, resolution=resolution, sequence_length=sequence_length, data_type=data_type, conditioning_frames=conditioning_frames, subset_num = subset_num))
     score = evaluator.compute_fvd_from_stats()
     print(f"id3: {score}")
+    evaluator.empty_fake_stats()
+    evaluator.empty_real_stats()
     return score

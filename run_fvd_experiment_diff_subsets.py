@@ -101,7 +101,9 @@ if __name__ == "__main__":
             
 
     for subset_num in [32, 64, 128, 256]:
-        group_res = []
+        group_res_fvd = []
+        group_res_lpips = []
+
         for group in groups:
             results_fvd = []
             results_lpips = []
@@ -124,11 +126,15 @@ if __name__ == "__main__":
 
                 # fvd_score = compute_fvd(args.gen_path, args.gt_path, resolution=args.resolution, sequence_length=args.sequence_length, data_type=args.data_type, conditioning_frames=args.conditioning_frames, subset_num = random_indexes)
                 # results.append(result['fvd'] )
-            fvd_results["fvd"][subset_num][group] = results_fvd
-            fvd_results["lpips"][subset_num][group] = results_lpips
-            group_res.apend(results_fvd)
+            # fvd_results["fvd"][subset_num][group] = results_fvd
+            # fvd_results["lpips"][subset_num][group] = results_lpips
+            group_res_fvd.append(results_fvd)
+            group_res_lpips.append(results_lpips)
+
         print("-----------------------------")
-        print(f"subset_num: ", group_res)
+        print(f"subset_num: ", group_res_fvd)
+        print(f"group_res_lpips: ", group_res_lpips)
+
         print()
     
 

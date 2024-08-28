@@ -52,7 +52,7 @@ if __name__ == "__main__":
     # parser.add_argument("--sequence_length", type=int, default=25, help="Number of frames in each video sequence (default: 25)")
     # parser.add_argument("--data_type", type=str, default='video_folder', help="Type of the data input (default: 'video_folder')")
     # parser.add_argument("--conditioning_frames", type=int, default=6, help="Number of conditioning frames (default: 3)")
-    # parser.add_argument("--output", type=str, default="./fvd_results", help="Number of conditioning frames (default: 3)")
+    parser.add_argument("--output", type=str, default="./fvd_results", help="Number of conditioning frames (default: 3)")
 
     # parser.add_argument("--subset_num", type=int, default=50, help="Number of samples to compute FVD on (default: 50)")
 
@@ -71,6 +71,8 @@ if __name__ == "__main__":
     fvd_results ={}
     random.seed(0) 
 
+    print("sampling", list(powers_of_two(len(all_samples))))
+
     for subset_num in powers_of_two(len(all_samples)):
         results = []
         for run_idx in range(10):
@@ -87,6 +89,7 @@ if __name__ == "__main__":
             fvd_score = calculate_fvd(videos1, videos2, "cuda", method='styleganv')
 
             print(fvd_score)
+            results.append(fvd_score)
             # fvd_score = compute_fvd(args.gen_path, args.gt_path, resolution=args.resolution, sequence_length=args.sequence_length, data_type=args.data_type, conditioning_frames=args.conditioning_frames, subset_num = random_indexes)
             # results.append(result['fvd'] )
         fvd_results[subset_num] = results

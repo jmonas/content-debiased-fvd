@@ -24,13 +24,14 @@ if __name__ == "__main__":
     # parser.add_argument("--subset_num", type=int, default=50, help="Number of samples to compute FVD on (default: 50)")
 
     args = parser.parse_args()
-    random.seed(None) 
+    
 
     fvd_results ={}
     num_vids = len(os.listdir(args.gen_path))
     for subset_num in powers_of_two(num_vids):
         results = []
         for run_idx in range(10):
+            random.seed(None) 
             print(f"Runnning FVD for {subset_num} videos (experiment #{run_idx}):", subset_num)
             random_indexes = random.sample(range(num_vids), subset_num)
             fvd_score = compute_fvd(args.gen_path, args.gt_path, resolution=args.resolution, sequence_length=args.sequence_length, data_type=args.data_type, conditioning_frames=args.conditioning_frames, subset_num = random_indexes)

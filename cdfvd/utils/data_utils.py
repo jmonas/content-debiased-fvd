@@ -169,6 +169,7 @@ class VideoDataset(data.Dataset):
         if subset_num:
             print(subset_num)
             selected_files = random.sample(files_sorted, subset_num)
+            print(selected_files)
         print("file len", len(selected_files))
         warnings.filterwarnings('ignore')
         cache_file = osp.join(folder, f"metadata_{sequence_length}.pkl")

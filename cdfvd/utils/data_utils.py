@@ -168,19 +168,19 @@ class VideoDataset(data.Dataset):
         files_sorted = sorted(files)
         if subset_num:
             print(subset_num)
-            files = files_sorted[-subset_num:]
-        print("file len", len(files))
+            selected_files = random.sample(files_sorted, subset_num)
+        print("file len", len(selected_files))
         warnings.filterwarnings('ignore')
         cache_file = osp.join(folder, f"metadata_{sequence_length}.pkl")
         if not osp.exists(cache_file):
-            clips = VideoClips(files, sequence_length, num_workers=4)
+            clips = VideoClips(selected_files, sequence_length, num_workers=4)
             try:
                 pickle.dump(clips.metadata, open(cache_file, 'wb'))
             except:
                 print(f"Failed to save metadata to {cache_file}")
         else:
             metadata = pickle.load(open(cache_file, 'rb'))
-            clips = VideoClips(files, sequence_length,
+            clips = VideoClips(selected_files, sequence_length,
                                _precomputed_metadata=metadata)
 
         self._clips = clips

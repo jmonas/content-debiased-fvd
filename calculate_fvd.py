@@ -40,7 +40,7 @@ def calculate_fvd(videos1, videos2, device, method='styleganv'):
     fvd_results = {}
 
     # for calculate FVD, each clip_timestamp must >= 10
-    for clip_timestamp in tqdm(range(10, videos1.shape[-3]+1)):
+    for clip_timestamp in tqdm(range(videos1.shape[-3], videos1.shape[-3]+1)):
        
         # get a video clip
         # videos_clip [batch_size, channel, timestamps[:clip], h, w]

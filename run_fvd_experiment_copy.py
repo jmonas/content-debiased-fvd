@@ -69,11 +69,11 @@ if __name__ == "__main__":
 
 
     fvd_results ={}
+    random.seed(0) 
 
     for subset_num in powers_of_two(len(all_samples)):
         results = []
         for run_idx in range(10):
-            random.seed(0) 
             print(f"Runnning FVD for {subset_num} videos (experiment #{run_idx}):", subset_num)
 
 

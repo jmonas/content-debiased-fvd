@@ -66,6 +66,15 @@ if __name__ == "__main__":
     targets_dir = img_dir / "real" / "videos"
 
     all_samples = os.listdir(samples_dir)
+    all_targets = os.listdir(targets_dir)
+    
+    samples_set = set(os.path.basename(file) for file in all_samples)
+    targets_set = set(os.path.basename(file) for file in all_targets)
+
+
+    common_files = samples_set.intersection(targets_set)
+        
+
 
 
     fvd_results ={}
@@ -77,10 +86,11 @@ if __name__ == "__main__":
         results = []
         for run_idx in range(10):
             print(f"Runnning FVD for {subset_num} videos (experiment #{run_idx}):", subset_num)
+            selected_files = random.sample(common_files, subset_num)
 
+            final_samples = [os.path.join(samples_dir, sample_name) for sample_name in selected_files]
+            final_targets = [os.path.join(targets_dir, sample_name) for sample_name in selected_files]
 
-            final_samples = random.sample(all_samples, subset_num)
-            final_targets = [sample.replace("virtual", "real") for sample in final_samples]
             assert all((targets_dir / final_target).exists() for final_target in final_targets), "Missing ground truth."
             videos1 = torch.stack([mp4_to_torch(samples_dir / sample)[args.num_cond_frames:] for sample in final_samples])
             videos2 = torch.stack([mp4_to_torch(targets_dir / target)[args.num_cond_frames:] for target in final_targets])

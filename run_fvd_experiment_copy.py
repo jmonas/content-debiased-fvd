@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
 
     common_files = samples_set.intersection(targets_set)
-    print("len common files: ", common_files)
+    print("len common files: ", len(common_files))
 
 
 
@@ -91,9 +91,8 @@ if __name__ == "__main__":
             final_samples = [os.path.join(samples_dir, sample_name) for sample_name in selected_files]
             final_targets = [os.path.join(targets_dir, sample_name) for sample_name in selected_files]
 
-            assert all((targets_dir / final_target).exists() for final_target in final_targets), "Missing ground truth."
-            videos1 = torch.stack([mp4_to_torch(samples_dir / sample)[args.num_cond_frames:] for sample in final_samples])
-            videos2 = torch.stack([mp4_to_torch(targets_dir / target)[args.num_cond_frames:] for target in final_targets])
+            videos1 = torch.stack([mp4_to_torch(sample)[args.num_cond_frames:] for sample in final_samples])
+            videos2 = torch.stack([mp4_to_torch(target)[args.num_cond_frames:] for target in final_targets])
 
 
             fvd_score = calculate_fvd(videos1, videos2, "cuda", method='styleganv')

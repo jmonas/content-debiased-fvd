@@ -7,7 +7,7 @@ import random
 import gc
 import argparse
 import imageio.v3 as iio
-
+import numpy as np
 from einops import rearrange
 from torchvision.transforms import v2
 from tqdm.auto import tqdm
@@ -120,9 +120,9 @@ if __name__ == "__main__":
 
                 fvd_score = calculate_fvd(videos1, videos2, "cuda", method='styleganv')
 
-                print(f"{subset_num} videos (experiment #{run_idx}) --- FVD: {fvd_score} || LPIPS : {lpips}")
+                print(f"{subset_num} videos (experiment #{run_idx}) --- FVD: {fvd_score} || LPIPS : {np.mean(list(lpips["value"].values()))}")
                 results_fvd.append(fvd_score)
-                results_lpips.append(lpips)
+                results_lpips.append(np.mean(list(lpips["value"].values())))
 
                 # fvd_score = compute_fvd(args.gen_path, args.gt_path, resolution=args.resolution, sequence_length=args.sequence_length, data_type=args.data_type, conditioning_frames=args.conditioning_frames, subset_num = random_indexes)
                 # results.append(result['fvd'] )
@@ -132,7 +132,13 @@ if __name__ == "__main__":
             group_res_lpips.append(results_lpips)
 
         print("-----------------------------")
-        print(f"subset_num: ", group_res_fvd)
+        print(subset_num)
+        print("FVD")
+        for i in group_res_fvd:
+            print(i)
+        print("LPIPS")
+        for i in group_res_lpips:
+            print(i)
         print(f"group_res_lpips: ", group_res_lpips)
 
         print()

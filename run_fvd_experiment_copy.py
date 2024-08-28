@@ -120,12 +120,12 @@ if __name__ == "__main__":
         required=True,
         help="Number of conditioning frames, will be excluded from calculations."
     )
-    parser.add_argument(
-        "--num_experiments",
-        type=int,
-        required=True,
-        help="Number of conditioning frames, will be excluded from calculations."
-    )
+    # parser.add_argument(
+    #     "--num_experiments",
+    #     type=int,
+    #     required=True,
+    #     help="Number of conditioning frames, will be excluded from calculations."
+    # )
     # parser.add_argument("--gen_path", type=str, help="Path to the generated videos directory")
     # parser.add_argument("--gt_path", type=str, help="Path to the ground truth videos directory")
     # parser.add_argument("--resolution", type=int, default=256, help="Resolution of the videos (default: 256)")

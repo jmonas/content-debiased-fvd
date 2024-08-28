@@ -13,6 +13,7 @@ from torchvision.transforms import v2
 from tqdm.auto import tqdm
 import os
 import torchmetrics.image
+from calculate_lpips import calculate_lpips
 
 import torch
 from calculate_fvd import calculate_fvd
@@ -49,7 +50,10 @@ if __name__ == "__main__":
         required=True,
         help="Number of conditioning frames, will be excluded from calculations."
     )
-
+    parser.add_argument(
+        "--dataset_size",
+        type=int,
+    )
     # parser.add_argument("--gen_path", type=str, help="Path to the generated videos directory")
     # parser.add_argument("--gt_path", type=str, help="Path to the ground truth videos directory")
     # parser.add_argument("--resolution", type=int, default=256, help="Resolution of the videos (default: 256)")
@@ -72,22 +76,27 @@ if __name__ == "__main__":
     all_samples = os.listdir(samples_dir)
     all_targets = os.listdir(targets_dir)
     
+
     samples_set = set(os.path.basename(file) for file in all_samples)
     targets_set = set(os.path.basename(file) for file in all_targets)
 
 
     common_files = samples_set.intersection(targets_set)
+    if args.dataset_size:
+        common_files = common_files[args.dataset_size:]
+
     print("len common files: ", len(common_files))
 
 
 
-    fvd_results ={"sample_size": len(common_files),"results":{}}
+    fvd_results ={"sample_size": len(common_files),"fvd":{}, "lpips":{}}
     random.seed(0) 
 
     print("sampling", [512, 1024])
 
-    for subset_num in [512, 1024]:
-        results = []
+    for subset_num in [32, 64, 128, 256, 512, 1024]:
+        results_fvd = []
+        results_lpips = []
         for run_idx in range(10):
             selected_files = random.sample(common_files, subset_num)
 
@@ -96,15 +105,19 @@ if __name__ == "__main__":
 
             videos1 = torch.stack([mp4_to_torch(sample)[args.num_cond_frames:] for sample in final_samples])
             videos2 = torch.stack([mp4_to_torch(target)[args.num_cond_frames:] for target in final_targets])
+            lpips= calculate_lpips(videos1, videos2, "cuda")
 
 
             fvd_score = calculate_fvd(videos1, videos2, "cuda", method='styleganv')
 
-            print(f"FVD for {subset_num} videos (experiment #{run_idx}):", fvd_score)
-            results.append(fvd_score)
+            print(f"{subset_num} videos (experiment #{run_idx}) --- FVD: {fvd_score} || LPIPS : {lpips}")
+            results_fvd.append(fvd_score)
+            results_lpips.append(lpips)
+
             # fvd_score = compute_fvd(args.gen_path, args.gt_path, resolution=args.resolution, sequence_length=args.sequence_length, data_type=args.data_type, conditioning_frames=args.conditioning_frames, subset_num = random_indexes)
             # results.append(result['fvd'] )
-        fvd_results["results"][subset_num] = results
+        fvd_results["fvd"][subset_num] = results_fvd
+        fvd_results["lpips"][subset_num] = results_lpips
 
     os.makedirs(args.output, exist_ok=True)
     print(fvd_results)

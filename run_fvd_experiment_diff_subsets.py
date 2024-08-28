@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
                 fvd_score = calculate_fvd(videos1, videos2, "cuda", method='styleganv')
 
-                print(f"{subset_num} videos (experiment #{run_idx}) --- FVD: {fvd_score} || LPIPS : {np.mean(list(lpips["value"].values()))}")
+                print(f"{subset_num} videos (experiment #{run_idx}) --- FVD: {fvd_score} || LPIPS : {np.mean(list(lpips['value'].values()))}")
                 results_fvd.append(fvd_score)
                 results_lpips.append(np.mean(list(lpips["value"].values())))
 

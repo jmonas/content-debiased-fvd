@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
 
     common_files = samples_set.intersection(targets_set)
-        
+    print("len common files: ", common_files)
 
 
 

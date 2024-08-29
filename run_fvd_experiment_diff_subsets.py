@@ -100,14 +100,15 @@ if __name__ == "__main__":
     print("sampling", [32, 64, 128, 256])
             
 
-    for subset_num in [32, 64, 128, 256]:
+    for subset_num in [1024, 2048, 4000]:
+        groups = list(chunk_list(common_files_list, args.dataset_size))[:-1]
         group_res_fvd = []
         group_res_lpips = []
 
         for group in groups:
             results_fvd = []
             results_lpips = []
-            for run_idx in range(10):
+            for run_idx in range(1):
                 selected_files = random.sample(common_files, subset_num)
 
                 final_samples = [os.path.join(samples_dir, sample_name) for sample_name in selected_files]

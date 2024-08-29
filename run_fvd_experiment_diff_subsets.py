@@ -101,7 +101,7 @@ if __name__ == "__main__":
             
 
     for subset_num in [1024, 2048, 4000]:
-        groups = list(chunk_list(common_files_list, args.dataset_size))[:-1]
+        groups = list(chunk_list(common_files_list, subset_num))[:-1]
         group_res_fvd = []
         group_res_lpips = []
 

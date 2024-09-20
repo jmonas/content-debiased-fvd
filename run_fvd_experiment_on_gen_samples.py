@@ -59,6 +59,7 @@ if __name__ == "__main__":
     
 
 
+CUDA_VISIBLE_DEVICES=1 python3 run_fvd_experiment_on_gen_samples.py --img_dir ../vista/sample_outputs/generations_2.1epochs/ --num_cond_frames 3 --output /eval/2.1_epochs --max_files 3120
 
     img_dir = Path(args.img_dir)
     samples_dir = img_dir / "virtual" / "videos"
@@ -73,7 +74,7 @@ if __name__ == "__main__":
 
 
     common_files = samples_set.intersection(targets_set)
-    common_files_list = list(common_files)
+    common_files = list(common_files)
 
     print("len common files: ", len(common_files))
 

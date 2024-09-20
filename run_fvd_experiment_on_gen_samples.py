@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
     if args.max_files:
         common_files[:args.max_files] = common_files
-
+        print("remaining files", len(common_files))
     random.seed(0) 
 
     final_samples = [os.path.join(samples_dir, sample_name) for sample_name in common_files]

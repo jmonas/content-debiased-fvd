@@ -52,7 +52,7 @@ if __name__ == "__main__":
     # parser.add_argument("--data_type", type=str, default='video_folder', help="Type of the data input (default: 'video_folder')")
     # parser.add_argument("--conditioning_frames", type=int, default=6, help="Number of conditioning frames (default: 3)")
     parser.add_argument("--output", type=str, default="./fvd_results")
-
+    parser.add_argument("--max_files", type=int, default=None)
     # parser.add_argument("--subset_num", type=int, default=50, help="Number of samples to compute FVD on (default: 50)")
 
     args = parser.parse_args()
@@ -76,6 +76,9 @@ if __name__ == "__main__":
     common_files_list = list(common_files)
 
     print("len common files: ", len(common_files))
+
+    if args.max_files:
+        common_files[:args.max_files] = common_files
 
     random.seed(0) 
 

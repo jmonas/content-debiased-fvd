@@ -87,9 +87,9 @@ if __name__ == "__main__":
 
     videos1 = torch.stack([mp4_to_torch(sample)[args.num_cond_frames:] for sample in final_samples])
     videos2 = torch.stack([mp4_to_torch(target)[args.num_cond_frames:] for target in final_targets])
+    print("start lpips")
     lpips= calculate_lpips(videos1, videos2, "cuda")
-
+    print(f"LPIPS: {np.mean(list(lpips['value'].values()))}")
     fvd_score = calculate_fvd(videos1, videos2, "cuda", method='styleganv')
-
     print(f" FVD: {fvd_score} || LPIPS : {np.mean(list(lpips['value'].values()))}")
 

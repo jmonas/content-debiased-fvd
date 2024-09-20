@@ -78,7 +78,7 @@ if __name__ == "__main__":
     print("len common files: ", len(common_files))
 
     if args.max_files:
-        common_files[:args.max_files] = common_files
+        common_files= common_files[:args.max_files]
         print("remaining files", len(common_files))
     random.seed(0) 
 

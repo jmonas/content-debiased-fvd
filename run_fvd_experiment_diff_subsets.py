@@ -87,8 +87,8 @@ if __name__ == "__main__":
 
     common_files = samples_set.intersection(targets_set)
     common_files_list = list(common_files)
-    if args.dataset_size:
-        groups = list(chunk_list(common_files_list, args.dataset_size))[:-1]
+    # if args.dataset_size:
+    #     groups = list(chunk_list(common_files_list, args.dataset_size))[:-1]
 
     print("len common files: ", len(common_files))
 
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     print("sampling", [32, 64, 128, 256])
             
 
-    for subset_num in [1024, 2048, 4000]:
+    for subset_num in [250, 500, 1000, 1500]:
         groups = list(chunk_list(common_files_list, subset_num))[:-1]
         group_res_fvd = []
         group_res_lpips = []
@@ -119,10 +119,10 @@ if __name__ == "__main__":
                 lpips= calculate_lpips(videos1, videos2, "cuda")
 
 
-                fvd_score = calculate_fvd(videos1, videos2, "cuda", method='styleganv')
+                # fvd_score = calculate_fvd(videos1, videos2, "cuda", method='styleganv')
 
-                print(f"{subset_num} videos (experiment #{run_idx}) --- FVD: {fvd_score} || LPIPS : {np.mean(list(lpips['value'].values()))}")
-                results_fvd.append(fvd_score)
+                print(f"{subset_num} videos (experiment #{run_idx}) LPIPS : {np.mean(list(lpips['value'].values()))}")
+                # results_fvd.append(fvd_score)
                 results_lpips.append(np.mean(list(lpips["value"].values())))
 
                 # fvd_score = compute_fvd(args.gen_path, args.gt_path, resolution=args.resolution, sequence_length=args.sequence_length, data_type=args.data_type, conditioning_frames=args.conditioning_frames, subset_num = random_indexes)
